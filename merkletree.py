@@ -18,6 +18,8 @@ def filehash(filename):
 
 def merkletree(*args):
   # no upper bound to number of files - dynamic
+  filename = None
+  # initialize the filename to nothing
   if len(args) == 1:
     filename = Path(args[0]).resolve()
     # resolves to file
@@ -39,13 +41,14 @@ def merkletree(*args):
           new_args.append(file1 + file2)
           #hash the files and append them to the new_args list
     else:
-      # if only one argument entry remains, hash and append to list.
+      # if only one argument entry remains, hash and append to list. It doesn't like it if I try to cut the "len == 1" before while loop
+      if filename is None:
+          filename = Path(args[0]).resolve()
       file1 = filehash(filename)
       new_args.append(file1)
     # once all hashes are calculated, reassign new_args to args
     args = new_args
   return args[0]
-
 # Input: Pathnames of files. There should be no upper bound on the number of files. Your program should be able to handle thousands of files.
 
 # Output: Compute Top Hash and demonstrate that Top Hash does not match when one or more files are modified.
